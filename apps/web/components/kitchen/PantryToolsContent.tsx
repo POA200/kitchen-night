@@ -9,6 +9,7 @@ import {
   Check,
   Loader2,
   AlertCircle,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -86,6 +87,23 @@ export function PantryToolsContent({
         </div>
       </div>
 
+      {/* Cookieswap Liquidity Callout */}
+      <div className="mt-3 flex items-center justify-between gap-3 rounded-2xl border border-primary/20 bg-primary/5 px-4 py-2.5">
+        <div className="flex items-center gap-2 text-xs text-text">
+          <Sparkles className="h-4 w-4 text-primary shrink-0" />
+          <span className="font-medium text-text">Need $COOK to equip tools?</span>
+        </div>
+        <a
+          href="https://cookieswap.fun"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground shadow-xs hover:bg-primary/90 transition-colors"
+        >
+          <span>Get on Cookieswap</span>
+          <ExternalLink className="h-3 w-3" />
+        </a>
+      </div>
+
       {error && (
         <div className="mt-3 flex items-start gap-2 rounded-xl border border-destructive/20 bg-destructive/10 p-3 text-xs text-destructive">
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
@@ -98,7 +116,8 @@ export function PantryToolsContent({
         {UTENSIL_TOOLS.map((tool) => {
           const isEquipped = profile.equippedToolId === tool.id;
           const unlockedList =
-            Array.isArray(profile.unlockedToolIds) && profile.unlockedToolIds.length > 0
+            Array.isArray(profile.unlockedToolIds) &&
+            profile.unlockedToolIds.length > 0
               ? profile.unlockedToolIds
               : ["wooden_spoon", profile.equippedToolId];
           const isUnlocked = unlockedList.includes(tool.id) || tool.price === 0;
@@ -110,8 +129,8 @@ export function PantryToolsContent({
                 isEquipped
                   ? "border-primary/40 bg-primary/5 shadow-xs"
                   : isUnlocked
-                  ? "border-primary/20 bg-accent/20 hover:border-border hover:bg-accent/30"
-                  : "border-border/70 bg-card hover:border-border hover:bg-accent/20"
+                    ? "border-primary/20 bg-accent/20 hover:border-border hover:bg-accent/30"
+                    : "border-border/70 bg-card hover:border-border hover:bg-accent/20"
               }`}
             >
               <div>

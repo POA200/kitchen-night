@@ -8,6 +8,7 @@ import {
   createKitchenEquipTx,
   parseKitchenMemo,
 } from "@/lib/kitchen";
+import { soundEffects } from "@/lib/audio";
 
 export interface KitchenProfile {
   name: string;
@@ -481,6 +482,8 @@ export function useKitchen() {
         setReceipts(updatedReceipts);
         setHasKitchen(true);
 
+        soundEffects.playEquipSuccess();
+
         syncToServer(publicKey.toBase58(), newProfile, updatedReceipts);
       } catch (err: unknown) {
         let message =
@@ -578,6 +581,8 @@ export function useKitchen() {
 
         setProfile(updatedProfile);
         setReceipts(updatedReceipts);
+
+        soundEffects.playBakeSuccess();
 
         syncToServer(publicKey.toBase58(), updatedProfile, updatedReceipts);
       } catch (err: unknown) {
@@ -689,6 +694,8 @@ export function useKitchen() {
 
         setProfile(updatedProfile);
         setReceipts(updatedReceipts);
+
+        soundEffects.playEquipSuccess();
 
         syncToServer(publicKey.toBase58(), updatedProfile, updatedReceipts);
       } catch (err: unknown) {

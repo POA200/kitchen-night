@@ -17,6 +17,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { BridgeGuideModal } from "@/components/kitchen/BridgeGuideModal";
 
 export const COOK_MINT = new PublicKey(
   "36ZrtQoab5MhhySaP1YSTwUahSk6GRVUTtZ6cuVfm9e1",
@@ -30,6 +31,7 @@ export function Header() {
 
   const [balance, setBalance] = useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isBridgeModalOpen, setIsBridgeModalOpen] = useState(false);
 
   // Fetch COOK token / native balance
   useEffect(() => {
@@ -132,22 +134,31 @@ export function Header() {
         </div>
 
         {/* ─────────────────────────────────────────────
-            CENTER — BRIDGE GUIDE (Desktop only)
+            CENTER — BRIDGE & ECOSYSTEM (Desktop only)
         ───────────────────────────────────────────── */}
-        <div className="absolute left-1/2 hidden -translate-x-1/2 md:block">
+        <div className="absolute left-1/2 hidden -translate-x-1/2 md:flex md:items-center md:gap-2">
+          <Button
+            variant="outline"
+            onClick={() => setIsBridgeModalOpen(true)}
+            className="h-9 rounded-full border-border bg-card px-4 text-xs font-medium text-text shadow-xs transition-colors hover:bg-accent cursor-pointer"
+          >
+            <span>Bridge Guide</span>
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </Button>
+
           <Button
             variant="outline"
             nativeButton={false}
             render={
               <a
-                href="https://docs.cookiechain.wtf"
+                href="https://cookieswap.fun"
                 target="_blank"
                 rel="noopener noreferrer"
               />
             }
-            className="h-9 rounded-full border-border bg-card px-5 text-xs font-medium text-text shadow-xs transition-colors hover:bg-accent cursor-pointer"
+            className="h-9 rounded-full border-primary/30 bg-primary/5 px-4 text-xs font-semibold text-primary shadow-xs transition-colors hover:bg-primary/10 cursor-pointer"
           >
-            <span>Bridge Guide</span>
+            <span>Cookieswap</span>
             <ArrowUpRight className="h-3.5 w-3.5" />
           </Button>
         </div>
@@ -257,18 +268,31 @@ export function Header() {
                         {/* Bridge Guide Button (w-full) */}
                         <Button
                           variant="outline"
+                          onClick={() => {
+                            setIsMobileMenuOpen(false);
+                            setIsBridgeModalOpen(true);
+                          }}
+                          className="h-11 w-full justify-center rounded-xl border-border bg-card text-sm font-medium text-text shadow-xs transition-colors hover:bg-accent cursor-pointer"
+                        >
+                          <span>Bridge Guide</span>
+                          <ArrowUpRight className="h-4 w-4" />
+                        </Button>
+
+                        {/* Cookieswap Button (w-full) */}
+                        <Button
+                          variant="outline"
                           nativeButton={false}
                           render={
                             <a
-                              href="https://docs.cookiechain.wtf"
+                              href="https://cookieswap.fun"
                               target="_blank"
                               rel="noopener noreferrer"
                               onClick={() => setIsMobileMenuOpen(false)}
                             />
                           }
-                          className="h-11 w-full justify-center rounded-xl border-border bg-card text-sm font-medium text-text shadow-xs transition-colors hover:bg-accent cursor-pointer"
+                          className="h-11 w-full justify-center rounded-xl border-primary/30 bg-primary/5 text-sm font-semibold text-primary shadow-xs transition-colors hover:bg-primary/10 cursor-pointer"
                         >
-                          <span>Bridge Guide</span>
+                          <span>Trade on Cookieswap</span>
                           <ArrowUpRight className="h-4 w-4" />
                         </Button>
 
@@ -302,6 +326,12 @@ export function Header() {
           )}
         </div>
       </div>
+
+      {/* Interactive Bridge & Ecosystem Modal */}
+      <BridgeGuideModal
+        isOpen={isBridgeModalOpen}
+        onClose={() => setIsBridgeModalOpen(false)}
+      />
     </header>
   );
 }

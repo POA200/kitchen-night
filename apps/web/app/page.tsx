@@ -14,6 +14,7 @@ import { BakeOrderCard } from "@/components/kitchen/BakeOrderCard";
 import { KitchenReceiptsTable } from "@/components/kitchen/KitchenReceiptsTable";
 import { LeaderboardTable } from "@/components/kitchen/LeaderboardTable";
 import { PantryToolsModal } from "@/components/kitchen/PantryToolsModal";
+import { NetworkPulseBar } from "@/components/kitchen/NetworkPulseBar";
 
 export default function Home() {
   const { connected, publicKey } = useWallet();
@@ -66,6 +67,10 @@ export default function Home() {
   return (
     <main className="min-h-[calc(100vh-4rem)] w-full bg-background px-4 py-8 sm:px-8 lg:px-16">
       <div className="mx-auto max-w-7xl">
+        <div className="mb-6">
+          <NetworkPulseBar currentSlot={currentSlot} />
+        </div>
+
         {/* State 1: Wallet Disconnected Empty State */}
         {!connected && (
           <div className="flex min-h-[60vh] flex-col items-center justify-center text-center">

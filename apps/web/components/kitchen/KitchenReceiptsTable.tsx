@@ -60,7 +60,7 @@ export function KitchenReceiptsTable({
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const currentReceipts = receipts.slice(
     startIndex,
-    startIndex + ITEMS_PER_PAGE
+    startIndex + ITEMS_PER_PAGE,
   );
 
   return (
@@ -207,7 +207,8 @@ export function KitchenReceiptsTable({
                 {startIndex + 1}–
                 {Math.min(startIndex + ITEMS_PER_PAGE, receipts.length)}
               </strong>{" "}
-              of <strong className="text-text">{receipts.length}</strong> receipts
+              of <strong className="text-text">{receipts.length}</strong>{" "}
+              receipts
             </span>
 
             <div className="flex items-center gap-1.5">
