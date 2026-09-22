@@ -34,7 +34,9 @@ function getToolIcon(iconName: UtensilTool["iconName"]) {
     case "spoon":
       return <Utensils className="h-5 w-5 text-primary stroke-[1.8]" />;
     case "oven":
-      return <Flame className="h-5 w-5 text-amber-500 fill-amber-500/20 stroke-[1.8]" />;
+      return (
+        <Flame className="h-5 w-5 text-amber-500 fill-amber-500/20 stroke-[1.8]" />
+      );
     case "chiller":
       return <Snowflake className="h-5 w-5 text-sky-400 stroke-[1.8]" />;
     case "whisk":
@@ -153,7 +155,7 @@ export function PantryToolsModal({
                   {isEquipped ? (
                     <Button
                       disabled
-                      className="h-9 w-full rounded-xl border border-primary/20 bg-primary/10 text-xs font-semibold text-primary disabled:opacity-100"
+                      className="h-10 w-full rounded-xl border border-primary/20 bg-primary/10 text-xs font-semibold text-primary disabled:opacity-100"
                     >
                       <Check className="mr-1.5 h-3.5 w-3.5" />
                       Equipped
@@ -162,12 +164,19 @@ export function PantryToolsModal({
                     <Button
                       onClick={() => handleEquip(tool.id)}
                       disabled={isSubmitting}
-                      className="h-9 w-full rounded-xl bg-primary text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
+                      className="h-10 w-full rounded-xl bg-primary text-xs font-bold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {isSubmitting ? (
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        <div className="flex items-center justify-center gap-1.5">
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          <span>Equipping...</span>
+                        </div>
                       ) : (
-                        <span>Equip</span>
+                        <span>
+                          {tool.price > 0
+                            ? `${tool.price} COOK — Equip`
+                            : "Equip (Free)"}
+                        </span>
                       )}
                     </Button>
                   )}
@@ -175,6 +184,13 @@ export function PantryToolsModal({
               </div>
             );
           })}
+        </div>
+
+        {/* Modal Footer Info */}
+        <div className="mt-2 text-center">
+          <p className="font-mono text-[11px] text-text-muted">
+            Equipping tools submits an on-chain memo: kitchen:v1:equip:&lt;tool_id&gt;
+          </p>
         </div>
       </DialogContent>
     </Dialog>

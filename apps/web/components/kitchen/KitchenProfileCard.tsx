@@ -72,7 +72,9 @@ export function KitchenProfileCard({
               {profile.bakesCount}
             </span>
             <span className="mt-1 text-[11px] font-medium text-text-muted">
-              {profile.bakesCount === 1 ? "Shift completed" : "Shifts completed"}
+              {profile.bakesCount === 1
+                ? "Shift completed"
+                : "Shifts completed"}
             </span>
           </div>
 

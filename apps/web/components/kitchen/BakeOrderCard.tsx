@@ -10,7 +10,11 @@ import { KitchenProfile } from "@/hooks/useKitchen";
 interface BakeOrderCardProps {
   currentSlot: number;
   profile: KitchenProfile;
-  onBake: (orderId: number, baseScore: number, multiplier: number) => Promise<void>;
+  onBake: (
+    orderId: number,
+    baseScore: number,
+    multiplier: number,
+  ) => Promise<void>;
   isSubmitting: boolean;
   error?: string | null;
 }
@@ -44,11 +48,13 @@ export function BakeOrderCard({
 }: BakeOrderCardProps) {
   // Rotate recipe and target slot window dynamically based on current slot or time
   const activeOrder = useMemo(() => {
-    const slotBase = currentSlot > 0 ? currentSlot : Math.floor(Date.now() / 1000);
+    const slotBase =
+      currentSlot > 0 ? currentSlot : Math.floor(Date.now() / 1000);
     const recipeIndex = Math.floor(slotBase / 20) % RECIPES.length;
     const recipe: RecipeItem = RECIPES[recipeIndex] ?? DEFAULT_RECIPE;
     const orderId = (slotBase % 90000) + 10000;
-    const targetSlot = (currentSlot > 0 ? currentSlot : 1000) + recipe.slotsWindow;
+    const targetSlot =
+      (currentSlot > 0 ? currentSlot : 1000) + recipe.slotsWindow;
 
     return {
       orderId,
@@ -80,7 +86,11 @@ export function BakeOrderCard({
 
   const handleBake = async () => {
     try {
-      await onBake(activeOrder.orderId, activeOrder.recipe.baseScore, multiplierNumber);
+      await onBake(
+        activeOrder.orderId,
+        activeOrder.recipe.baseScore,
+        multiplierNumber,
+      );
     } catch {
       // Error handled by parent hook
     }
@@ -105,7 +115,8 @@ export function BakeOrderCard({
             </span>
             <span>•</span>
             <span className="font-mono">
-              Target: Slot #{currentSlot > 0 ? activeOrder.targetSlot : "Syncing"}
+              Target: Slot #
+              {currentSlot > 0 ? activeOrder.targetSlot : "Syncing"}
             </span>
           </div>
         </div>
