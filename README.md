@@ -127,7 +127,7 @@ To ensure maximum reliability without requiring heavy centralized database serve
 
 ```bash
 # Clone the repository
-git clone https://github.com/ipeter1/kitchen-night.git
+git clone https://github.com/POA200/kitchen-night.git
 cd kitchen-night
 
 # Install dependencies
