@@ -6,18 +6,18 @@ This document contains everything needed to finalize your bounty submission for 
 
 ## 📦 Submission Overview & Coordinates
 
-| Field | Value |
-| :--- | :--- |
-| **Project Name** | **Kitchen Night** |
-| **Tagline** | The Real-Time SVM Bakery Arcade on Cookie Chain |
-| **Live App URL** | `https://kitchen-night.vercel.app` *(or your Vercel deployment domain)* |
-| **GitHub Repo** | `https://github.com/ipeter1/kitchen-night` |
-| **Target Network** | Cookie Chain (SVM) |
-| **RPC Endpoint** | `https://rpc.cookiescan.io` |
-| **Explorer** | `https://cookiescan.io` |
-| **Native Gas Token** | `$COOK` (9 Decimals) |
-| **SPL Memo Program** | `MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr` |
-| **Treasury / Incinerator** | `1nc1nerator11111111111111111111111111111111` |
+| Field                      | Value                                                                                                                     |
+| :------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
+| **Project Name**           | **Kitchen Night**                                                                                                         |
+| **Tagline**                | The Real-Time SVM Bakery Arcade on Cookie Chain                                                                           |
+| **Live App URL**           | `https://kitchen-night.vercel.app` _(or your Vercel deployment domain)_                                                   |
+| **GitHub Repo**            | `https://github.com/ipeter1/kitchen-night`                                                                                |
+| **Target Network**         | Cookie Chain (SVM)                                                                                                        |
+| **RPC Endpoint**           | `https://rpc.cookiescan.io`                                                                                               |
+| **Explorer**               | `https://cookiescan.io`                                                                                                   |
+| **Native Gas Token**       | `$COOK` (9 Decimals)                                                                                                      |
+| **SPL Memo Program**       | `MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr`                                                                             |
+| **Treasury / Incinerator** | `1nc1nerator11111111111111111111111111111111`                                                                             |
 | **Ecosystem Integrations** | Nightly Wallet, Cookieswap (`cookieswap.fun`), CookieScan (`cookiescan.io`), Cookie Chain Bridge (`docs.cookiechain.wtf`) |
 
 ---
@@ -27,6 +27,7 @@ This document contains everything needed to finalize your bounty submission for 
 > Copy and paste the 5 tweets below as a threaded post on X. Make sure to attach a short screen recording or screenshot of the dApp to Tweet 1!
 
 ### 🧵 Tweet 1 (The Hook & Demo Video)
+
 ```
 🚨 Introducing Kitchen Night: The real-time SVM bakery arcade built natively on @TheCookieChain! 🍪⚡
 
@@ -39,6 +40,7 @@ Thread & guide 👇 🧵 (1/5)
 ```
 
 ### 🧵 Tweet 2 (How It Works & On-Chain Mechanics)
+
 ```
 🧑‍🍳 How Kitchen Night leverages Cookie Chain SVM:
 
@@ -51,6 +53,7 @@ Thread & guide 👇 🧵 (1/5)
 ```
 
 ### 🧵 Tweet 3 (Cookie Chain Bridge Guide)
+
 ```
 🌉 Need $COOK to play? Here's the 3-step Bridge Guide:
 
@@ -65,6 +68,7 @@ Gas fees on Cookie Chain are under $0.0001 per bake! 🔥
 ```
 
 ### 🧵 Tweet 4 (Architecture & Zero-DB Protocol)
+
 ```
 🛠️ Under the hood:
 
@@ -77,6 +81,7 @@ Gas fees on Cookie Chain are under $0.0001 per bake! 🔥
 ```
 
 ### 🧵 Tweet 5 (Wrap-Up & Telegram Drop)
+
 ```
 Baking on Cookie Chain has never felt faster. Come test your baking speed, climb the Top 50 leaderboard, and experience the speed of SVM! 🚀
 
@@ -98,7 +103,7 @@ Special thanks to the @TheCookieChain & @cookieswap_fun teams! 🍪✨
 ```
 Hey @TheCookieChain fam! 🍪👋
 
-Just shipped "Kitchen Night" for the Cookie Chain cApp bounty! 
+Just shipped "Kitchen Night" for the Cookie Chain cApp bounty!
 
 It's a fast-paced on-chain bakery arcade featuring:
 ⚡ Sub-second (~350ms) SVM baking shifts

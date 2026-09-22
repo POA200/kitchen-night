@@ -71,7 +71,9 @@ export function BridgeGuideModal({ isOpen, onClose }: BridgeGuideModalProps) {
             <div className="rounded-2xl border border-border bg-accent/30 p-3.5 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold text-primary">STEP 1</span>
+                  <span className="text-[11px] font-bold text-primary">
+                    STEP 1
+                  </span>
                   <Coins className="h-3.5 w-3.5 text-text-muted" />
                 </div>
                 <h4 className="mt-1 font-heading text-xs font-bold text-text">
@@ -87,14 +89,17 @@ export function BridgeGuideModal({ isOpen, onClose }: BridgeGuideModalProps) {
             <div className="rounded-2xl border border-primary/30 bg-primary/5 p-3.5 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold text-primary">STEP 2</span>
+                  <span className="text-[11px] font-bold text-primary">
+                    STEP 2
+                  </span>
                   <ArrowRight className="h-3.5 w-3.5 text-primary" />
                 </div>
                 <h4 className="mt-1 font-heading text-xs font-bold text-text">
                   Bridge to Cookie
                 </h4>
                 <p className="mt-1 text-[11px] leading-relaxed text-text-muted">
-                  Deposit via the bridge to receive native $COOK on Cookie Chain.
+                  Deposit via the bridge to receive native $COOK on Cookie
+                  Chain.
                 </p>
               </div>
             </div>
@@ -103,14 +108,17 @@ export function BridgeGuideModal({ isOpen, onClose }: BridgeGuideModalProps) {
             <div className="rounded-2xl border border-border bg-accent/30 p-3.5 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold text-primary">STEP 3</span>
+                  <span className="text-[11px] font-bold text-primary">
+                    STEP 3
+                  </span>
                   <Zap className="h-3.5 w-3.5 text-text-muted" />
                 </div>
                 <h4 className="mt-1 font-heading text-xs font-bold text-text">
                   Swap & Bake
                 </h4>
                 <p className="mt-1 text-[11px] leading-relaxed text-text-muted">
-                  Use Cookieswap for liquidity and start baking in Kitchen Night!
+                  Use Cookieswap for liquidity and start baking in Kitchen
+                  Night!
                 </p>
               </div>
             </div>
@@ -134,7 +142,9 @@ export function BridgeGuideModal({ isOpen, onClose }: BridgeGuideModalProps) {
               <span className="text-text-muted text-[11px]">RPC Endpoint</span>
               <button
                 type="button"
-                onClick={() => copyToClipboard("https://rpc.cookiescan.io", "rpc")}
+                onClick={() =>
+                  copyToClipboard("https://rpc.cookiescan.io", "rpc")
+                }
                 className="flex items-center gap-1 font-mono text-[11px] font-medium text-text hover:text-primary transition-colors cursor-pointer"
               >
                 {copiedField === "rpc" ? (
@@ -160,7 +170,7 @@ export function BridgeGuideModal({ isOpen, onClose }: BridgeGuideModalProps) {
                 onClick={() =>
                   copyToClipboard(
                     "9wDaBRDgArEUpvhHxGguNkwozsZh4UpGZB9o2EoEcBB2",
-                    "genesis"
+                    "genesis",
                   )
                 }
                 className="flex items-center gap-1 font-mono text-[10px] text-text hover:text-primary transition-colors cursor-pointer truncate max-w-[240px]"

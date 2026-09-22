@@ -39,13 +39,13 @@ Leveraging Cookie Chain's sub-second transaction finality (~350ms) and near-zero
 
 Kitchen Night is deeply integrated into the Cookie Chain ecosystem:
 
-| Ecosystem Component | Integration in Kitchen Night |
-| :--- | :--- |
-| **[Cookie Chain SVM](https://docs.cookiechain.wtf)** | High-throughput execution layer with native `$COOK` gas tokens and sub-second block times. |
-| **[Nightly Wallet](https://nightly.app)** | Standard wallet adapter configuration optimized for Cookie Chain RPC. |
-| **[Cookieswap](https://cookieswap.fun)** | Direct in-app swap navigation and liquidity prompts for acquiring `$COOK`. |
-| **[CookieScan](https://cookiescan.io)** | Deep-linked block explorer verification on every transaction receipt and network pulse bar. |
-| **[Cookie Chain Bridge](https://docs.cookiechain.wtf)** | Interactive modal with 3-step bridge tutorial and copyable RPC parameters. |
+| Ecosystem Component                                     | Integration in Kitchen Night                                                                |
+| :------------------------------------------------------ | :------------------------------------------------------------------------------------------ |
+| **[Cookie Chain SVM](https://docs.cookiechain.wtf)**    | High-throughput execution layer with native `$COOK` gas tokens and sub-second block times.  |
+| **[Nightly Wallet](https://nightly.app)**               | Standard wallet adapter configuration optimized for Cookie Chain RPC.                       |
+| **[Cookieswap](https://cookieswap.fun)**                | Direct in-app swap navigation and liquidity prompts for acquiring `$COOK`.                  |
+| **[CookieScan](https://cookiescan.io)**                 | Deep-linked block explorer verification on every transaction receipt and network pulse bar. |
+| **[Cookie Chain Bridge](https://docs.cookiechain.wtf)** | Interactive modal with 3-step bridge tutorial and copyable RPC parameters.                  |
 
 ---
 
@@ -65,12 +65,12 @@ sequenceDiagram
     Player->>UI: Connect Wallet & Open Kitchen
     UI->>SVM: Send Memo ("kitchen:v1:open:<name>")
     SVM-->>UI: Confirm Tx (~350ms, Slot #N)
-    
+
     Player->>UI: Equip Utensil (e.g. Stone Deck Oven)
     UI->>SVM: SystemProgram.transfer(COOK) + Memo ("kitchen:v1:equip:<tool_id>")
     SVM->>Treasury: Transfer Lamports
     SVM-->>UI: Confirm Tx & Unlock Permanently
-    
+
     Player->>UI: Bake Order (Slot Countdown)
     UI->>SVM: Send Memo ("kitchen:v1:bake:<orderId>:<score>:<slot>")
     SVM-->>UI: Receipt Signed & Confirmed
@@ -92,7 +92,9 @@ sequenceDiagram
 ```
 
 ### Multi-Tier Persistence Model
+
 To ensure maximum reliability without requiring heavy centralized database servers:
+
 1. **Tier 1 (Instant)**: Fast local cache (`localStorage`) for millisecond UI hydration.
 2. **Tier 2 (Cross-Device)**: Lightweight API cache (`/api/kitchen/[wallet]`) to synchronize state across devices using the same wallet.
 3. **Tier 3 (Ground Truth)**: On-chain transaction signature reconstruction from Cookie Chain RPC.
@@ -101,21 +103,22 @@ To ensure maximum reliability without requiring heavy centralized database serve
 
 ## ⚙️ Network Configuration
 
-| Parameter | Value |
-| :--- | :--- |
-| **Network** | Cookie Chain Mainnet (SVM) |
-| **RPC Endpoint** | `https://rpc.cookiescan.io` |
-| **Genesis Hash** | `9wDaBRDgArEUpvhHxGguNkwozsZh4UpGZB9o2EoEcBB2` |
-| **Native Gas Token** | `$COOK` (9 Decimals) |
-| **Memo Program** | `MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr` |
-| **Treasury Address** | `1nc1nerator11111111111111111111111111111111` |
-| **Explorer** | `https://cookiescan.io` |
+| Parameter            | Value                                          |
+| :------------------- | :--------------------------------------------- |
+| **Network**          | Cookie Chain Mainnet (SVM)                     |
+| **RPC Endpoint**     | `https://rpc.cookiescan.io`                    |
+| **Genesis Hash**     | `9wDaBRDgArEUpvhHxGguNkwozsZh4UpGZB9o2EoEcBB2` |
+| **Native Gas Token** | `$COOK` (9 Decimals)                           |
+| **Memo Program**     | `MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr`  |
+| **Treasury Address** | `1nc1nerator11111111111111111111111111111111`  |
+| **Explorer**         | `https://cookiescan.io`                        |
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - [Node.js](https://nodejs.org/) v18+ or v20+
 - [pnpm](https://pnpm.io/) v9+
 - [Nightly Wallet](https://nightly.app/) browser extension with Cookie Chain network added

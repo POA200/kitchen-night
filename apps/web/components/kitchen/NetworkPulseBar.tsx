@@ -18,7 +18,9 @@ export function NetworkPulseBar({ currentSlot }: NetworkPulseBarProps) {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75"></span>
               <span className="relative inline-flex h-2 w-2 rounded-full bg-success"></span>
             </span>
-            <span className="font-semibold text-[11px] sm:text-xs">Cookie Chain SVM</span>
+            <span className="font-semibold text-[11px] sm:text-xs">
+              Cookie Chain SVM
+            </span>
           </div>
 
           <div className="hidden sm:block h-3 w-px bg-border" />
@@ -26,7 +28,9 @@ export function NetworkPulseBar({ currentSlot }: NetworkPulseBarProps) {
           <div className="flex items-center gap-1 font-mono text-[11px] text-text-muted">
             <span>Slot</span>
             <span className="font-semibold text-text">
-              {currentSlot > 0 ? `#${currentSlot.toLocaleString()}` : "Syncing..."}
+              {currentSlot > 0
+                ? `#${currentSlot.toLocaleString()}`
+                : "Syncing..."}
             </span>
           </div>
         </div>
