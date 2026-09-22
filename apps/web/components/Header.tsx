@@ -2,7 +2,15 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight, LogOut, Menu, Volume2, VolumeX, Wallet, X } from "lucide-react";
+import {
+  ArrowUpRight,
+  LogOut,
+  Menu,
+  Volume2,
+  VolumeX,
+  Wallet,
+  X,
+} from "lucide-react";
 import { PublicKey } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
@@ -133,15 +141,6 @@ export function Header() {
               NIGHT
             </span>
           </div>
-
-          {/* Cookie Chain Badge - Desktop only */}
-          <Badge
-            variant="outline"
-            className="hidden rounded-full border-success bg-success/10 text-success md:inline-flex"
-          >
-            <span className="h-2 w-2 rounded-full bg-success animate-pulse" />
-            Cookie Chain
-          </Badge>
         </div>
 
         {/* ─────────────────────────────────────────────
@@ -178,7 +177,7 @@ export function Header() {
             RIGHT — WALLET CONTROLS
         ───────────────────────────────────────────── */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
-          {/* Sound FX Toggle Button */}
+          {/* Sound FX Toggle Button (Desktop only, mobile is in menu panel) */}
           <Button
             variant="ghost"
             size="icon"
@@ -189,7 +188,7 @@ export function Header() {
                 ? "Sound Effects: Muted (Click to Enable)"
                 : "Sound Effects: Active (Click to Mute)"
             }
-            className="h-9 w-9 rounded-full text-text-muted hover:bg-accent hover:text-text cursor-pointer"
+            className="hidden md:inline-flex h-9 w-9 rounded-full text-text-muted hover:bg-accent hover:text-text cursor-pointer"
           >
             {isMuted ? (
               <VolumeX className="h-4 w-4 text-text-muted" />
@@ -200,8 +199,8 @@ export function Header() {
 
           {connected && publicKey ? (
             <>
-              {/* Wallet Balance (visible on both mobile and desktop) */}
-              <div className="rounded-full bg-accent px-3 py-1.5 font-mono text-xs font-semibold tracking-wide text-text sm:px-3.5">
+              {/* Wallet Balance (Desktop only, mobile is in menu panel) */}
+              <div className="hidden md:block rounded-full bg-accent px-3 py-1.5 font-mono text-xs font-semibold tracking-wide text-text sm:px-3.5">
                 {formatCookBalance(balance)}
               </div>
 
@@ -261,6 +260,13 @@ export function Header() {
                           <span className="font-black tracking-tight text-primary text-base">
                             NIGHT
                           </span>
+                          <Badge
+                            variant="outline"
+                            className="ml-1 rounded-full border-success bg-success/10 text-success text-[10px] py-0.5 px-2"
+                          >
+                            <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
+                            Cookie Chain
+                          </Badge>
                         </div>
                       </div>
 
@@ -295,6 +301,32 @@ export function Header() {
                             {formatCookBalance(balance)}
                           </div>
                         </div>
+
+                        {/* Sound Effects Toggle Button (Mobile) */}
+                        <Button
+                          variant="outline"
+                          onClick={handleToggleSound}
+                          className="h-11 w-full justify-between rounded-xl border-border bg-card px-4 text-sm font-medium text-text shadow-xs transition-colors hover:bg-accent cursor-pointer"
+                        >
+                          <div className="flex items-center gap-2.5">
+                            {isMuted ? (
+                              <VolumeX className="h-4 w-4 text-text-muted" />
+                            ) : (
+                              <Volume2 className="h-4 w-4 text-primary" />
+                            )}
+                            <span>Sound Effects</span>
+                          </div>
+                          <Badge
+                            variant="outline"
+                            className={
+                              isMuted
+                                ? "border-border text-text-muted text-[10px]"
+                                : "border-primary/30 bg-primary/10 text-primary text-[10px]"
+                            }
+                          >
+                            {isMuted ? "MUTED" : "ACTIVE"}
+                          </Badge>
+                        </Button>
 
                         {/* Bridge Guide Button (w-full) */}
                         <Button
