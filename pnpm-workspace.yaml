@@ -1,0 +1,14 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+allowBuilds:
+  bufferutil: true
+  utf-8-validate: true
+minimumReleaseAgeExclude:
+  - '@turbo/darwin-64@2.11.2'
+  - '@turbo/darwin-arm64@2.11.2'
+  - '@turbo/linux-64@2.11.2'
+  - '@turbo/linux-arm64@2.11.2'
+  - '@turbo/windows-64@2.11.2'
+  - '@turbo/windows-arm64@2.11.2'
+  - turbo@2.11.2
