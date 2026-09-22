@@ -9,6 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useKitchen } from "@/hooks/useKitchen";
 import { OpenKitchenModal } from "@/components/kitchen/OpenKitchenModal";
+import { KitchenProfileCard } from "@/components/kitchen/KitchenProfileCard";
+import { BakeOrderCard } from "@/components/kitchen/BakeOrderCard";
+import { KitchenReceiptsTable } from "@/components/kitchen/KitchenReceiptsTable";
+import { PantryToolsModal } from "@/components/kitchen/PantryToolsModal";
 
 export default function Home() {
   const { connected } = useWallet();
@@ -17,12 +21,17 @@ export default function Home() {
     isLoading,
     hasKitchen,
     profile,
+    receipts,
+    currentSlot,
     isSubmitting,
     actionError,
     openKitchen,
+    bakeOrder,
+    equipTool,
   } = useKitchen();
 
   const [isOpenModalManual, setIsOpenModalManual] = useState(false);
+  const [isPantryOpen, setIsPantryOpen] = useState(false);
 
   // Auto-open modal if wallet connected and has no kitchen, or if manually clicked
   const showOpenModal =
@@ -136,20 +145,38 @@ export default function Home() {
         {/* State 4: Connected with Active Kitchen Profile */}
         {connected && !isLoading && hasKitchen && profile && (
           <div className="space-y-6">
-            {/* Placeholder for Next Steps (Profile, Bake Order, Receipts Table) */}
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-xs">
-              <h2 className="font-heading text-xl font-bold text-text">
-                Kitchen Active: {profile.name}
-              </h2>
-              <p className="mt-1 text-sm text-text-muted">
-                Step 1 & 2 verified! Ready to proceed to Step 3:
-                KitchenProfileCard.
-              </p>
+            <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-12">
+              {/* Section 1: Kitchen Profile Card */}
+              <div className="lg:col-span-5">
+                <KitchenProfileCard
+                  profile={profile}
+                  onOpenPantry={() => setIsPantryOpen(true)}
+                />
+              </div>
+
+              {/* Section 2: Bake Order Card */}
+              <div className="lg:col-span-7">
+                <BakeOrderCard
+                  currentSlot={currentSlot}
+                  profile={profile}
+                  onBake={bakeOrder}
+                  isSubmitting={isSubmitting}
+                  error={actionError}
+                />
+              </div>
+
+              {/* Section 3: Live Cookie Chain Receipts Table */}
+              <div className="lg:col-span-12">
+                <KitchenReceiptsTable
+                  receipts={receipts}
+                  currentSlot={currentSlot}
+                />
+              </div>
             </div>
           </div>
         )}
 
-        {/* Open Kitchen Modal */}
+        {/* Modal 1: Open Kitchen Modal */}
         <OpenKitchenModal
           isOpen={showOpenModal}
           onClose={() => setIsOpenModalManual(false)}
@@ -157,6 +184,18 @@ export default function Home() {
           isSubmitting={isSubmitting}
           error={actionError}
         />
+
+        {/* Modal 2: Pantry & Utensils Modal */}
+        {profile && (
+          <PantryToolsModal
+            isOpen={isPantryOpen}
+            onClose={() => setIsPantryOpen(false)}
+            profile={profile}
+            onEquipTool={equipTool}
+            isSubmitting={isSubmitting}
+            error={actionError}
+          />
+        )}
       </div>
     </main>
   );
