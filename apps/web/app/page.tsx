@@ -12,6 +12,7 @@ import { OpenKitchenModal } from "@/components/kitchen/OpenKitchenModal";
 import { KitchenProfileCard } from "@/components/kitchen/KitchenProfileCard";
 import { BakeOrderCard } from "@/components/kitchen/BakeOrderCard";
 import { KitchenReceiptsTable } from "@/components/kitchen/KitchenReceiptsTable";
+import { LeaderboardTable } from "@/components/kitchen/LeaderboardTable";
 import { PantryToolsModal } from "@/components/kitchen/PantryToolsModal";
 
 export default function Home() {
@@ -33,7 +34,9 @@ export default function Home() {
   const walletKey = publicKey ? publicKey.toBase58() : null;
   const [isOpenModalManual, setIsOpenModalManual] = useState(false);
   const [isPantryOpen, setIsPantryOpen] = useState(false);
-  const [hasPromptedForWallet, setHasPromptedForWallet] = useState<string | null>(null);
+  const [hasPromptedForWallet, setHasPromptedForWallet] = useState<
+    string | null
+  >(null);
 
   // Auto-open modal ONCE only if confirmed that the connected wallet has NO kitchen
   useEffect(() => {
@@ -193,6 +196,14 @@ export default function Home() {
                 <KitchenReceiptsTable
                   receipts={receipts}
                   currentSlot={currentSlot}
+                />
+              </div>
+
+              {/* Section 4: Top 50 Leaderboard Table */}
+              <div className="lg:col-span-12">
+                <LeaderboardTable
+                  connectedWalletKey={walletKey}
+                  currentUserProfile={profile}
                 />
               </div>
             </div>
