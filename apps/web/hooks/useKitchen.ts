@@ -17,6 +17,7 @@ export interface KitchenProfile {
   equippedToolId: string;
   equippedToolName: string;
   equippedToolBoost: string;
+  unlockedToolIds?: string[];
   netWorth: number;
   bakesCount: number;
   avgLatency: number;
@@ -84,6 +85,7 @@ const DEFAULT_PROFILE: Omit<KitchenProfile, "name" | "owner"> = {
   equippedToolId: "wooden_spoon",
   equippedToolName: "Wooden Spoon",
   equippedToolBoost: "1.0x (Base)",
+  unlockedToolIds: ["wooden_spoon"],
   netWorth: 0,
   bakesCount: 0,
   avgLatency: 0,
@@ -278,6 +280,15 @@ export function useKitchen() {
           let bakesCount = 0;
           let netWorth = 0;
           const chainReceipts: KitchenReceipt[] = [];
+          const unlockedSet = new Set<string>(["wooden_spoon"]);
+          if (loadedProfile?.equippedToolId) {
+            unlockedSet.add(loadedProfile.equippedToolId);
+          }
+          if (Array.isArray(loadedProfile?.unlockedToolIds)) {
+            for (const id of loadedProfile.unlockedToolIds) {
+              unlockedSet.add(id);
+            }
+          }
 
           for (const tx of memoTxs) {
             if (tx.memo.startsWith("kitchen:v1:open:")) {
@@ -295,6 +306,7 @@ export function useKitchen() {
             } else if (tx.memo.startsWith("kitchen:v1:equip:")) {
               const toolId = tx.memo.replace("kitchen:v1:equip:", "").trim();
               currentEquippedId = toolId;
+              unlockedSet.add(toolId);
               chainReceipts.unshift({
                 id: tx.signature,
                 slot: tx.slot,
@@ -349,6 +361,7 @@ export function useKitchen() {
               equippedToolId: equippedTool.id,
               equippedToolName: equippedTool.name,
               equippedToolBoost: `${equippedTool.multiplier.toFixed(1)}x${equippedTool.multiplier === 1.0 ? " (Base)" : ""}`,
+              unlockedToolIds: Array.from(unlockedSet),
               netWorth: Math.max(netWorth, loadedProfile?.netWorth || 0),
               bakesCount: Math.max(bakesCount, loadedProfile?.bakesCount || 0),
               avgLatency: loadedProfile?.avgLatency || 240,
@@ -604,25 +617,35 @@ export function useKitchen() {
 
       const startTime = performance.now();
 
+      const unlockedList =
+        Array.isArray(profile.unlockedToolIds) && profile.unlockedToolIds.length > 0
+          ? profile.unlockedToolIds
+          : ["wooden_spoon", profile.equippedToolId];
+
+      const isAlreadyUnlocked = unlockedList.includes(tool.id) || tool.price === 0;
+      const effectivePrice = isAlreadyUnlocked ? 0 : tool.price;
+
       try {
         const lamports = await connection
           .getBalance(publicKey, "confirmed")
           .catch(() => 0);
-        const requiredLamports = Math.round(tool.price * LAMPORTS_PER_SOL);
 
-        // Verify balance if tool has a price
-        if (tool.price > 0 && lamports < requiredLamports + 10_000) {
-          const err = `Insufficient COOK balance. You need at least ${tool.price} COOK to equip ${tool.name}. Your balance: ${(lamports / LAMPORTS_PER_SOL).toFixed(4)} COOK.`;
-          setActionError(err);
-          throw new Error(err);
+        // Verify balance only if not already unlocked and requires COOK
+        if (effectivePrice > 0) {
+          const requiredLamports = Math.round(effectivePrice * LAMPORTS_PER_SOL);
+          if (lamports < requiredLamports + 10_000) {
+            const err = `Insufficient COOK balance. You need at least ${effectivePrice} COOK to equip ${tool.name}. Your balance: ${(lamports / LAMPORTS_PER_SOL).toFixed(4)} COOK.`;
+            setActionError(err);
+            throw new Error(err);
+          }
         }
 
-        // Build transaction: transfers actual COOK (if price > 0) and records kitchen:v1:equip:<id> memo
+        // Build transaction: transfers actual COOK only if not already unlocked (effectivePrice > 0)
         const tx = await createKitchenEquipTx(
           connection,
           publicKey,
           tool.id,
-          tool.price
+          effectivePrice
         );
         const signature = await sendTransaction(tx, connection);
 
@@ -633,11 +656,14 @@ export function useKitchen() {
           .getSlot("confirmed")
           .catch(() => currentSlot || 1);
 
+        const nextUnlocked = Array.from(new Set([...unlockedList, tool.id]));
+
         const updatedProfile: KitchenProfile = {
           ...profile,
           equippedToolId: tool.id,
           equippedToolName: tool.name,
           equippedToolBoost: `${tool.multiplier.toFixed(1)}x${tool.multiplier === 1.0 ? " (Base)" : ""}`,
+          unlockedToolIds: nextUnlocked,
         };
 
         const newReceipt: KitchenReceipt = {

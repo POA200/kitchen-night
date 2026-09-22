@@ -97,6 +97,11 @@ export function PantryToolsContent({
       <div className="mt-4 grid grid-cols-1 gap-3.5 sm:grid-cols-2">
         {UTENSIL_TOOLS.map((tool) => {
           const isEquipped = profile.equippedToolId === tool.id;
+          const unlockedList =
+            Array.isArray(profile.unlockedToolIds) && profile.unlockedToolIds.length > 0
+              ? profile.unlockedToolIds
+              : ["wooden_spoon", profile.equippedToolId];
+          const isUnlocked = unlockedList.includes(tool.id) || tool.price === 0;
 
           return (
             <div
@@ -104,6 +109,8 @@ export function PantryToolsContent({
               className={`flex flex-col justify-between rounded-2xl border p-5 transition-all ${
                 isEquipped
                   ? "border-primary/40 bg-primary/5 shadow-xs"
+                  : isUnlocked
+                  ? "border-primary/20 bg-accent/20 hover:border-border hover:bg-accent/30"
                   : "border-border/70 bg-card hover:border-border hover:bg-accent/20"
               }`}
             >
@@ -113,7 +120,22 @@ export function PantryToolsContent({
                     {getToolIcon(tool.iconName)}
                   </div>
 
-                  {tool.price > 0 ? (
+                  {isEquipped ? (
+                    <Badge
+                      variant="outline"
+                      className="rounded-full border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold text-primary"
+                    >
+                      Active
+                    </Badge>
+                  ) : isUnlocked ? (
+                    <Badge
+                      variant="outline"
+                      className="rounded-full border-success/30 bg-success/10 px-2.5 py-0.5 text-[11px] font-bold text-success flex items-center gap-1"
+                    >
+                      <Check className="h-3 w-3" />
+                      <span>Unlocked</span>
+                    </Badge>
+                  ) : tool.price > 0 ? (
                     <Badge
                       variant="outline"
                       className="rounded-full border-border/70 bg-accent/40 px-2.5 py-0.5 font-mono text-[11px] font-bold text-text-muted"
@@ -162,9 +184,9 @@ export function PantryToolsContent({
                       </div>
                     ) : (
                       <span>
-                        {tool.price > 0
-                          ? `${tool.price} COOK — Equip`
-                          : "Equip (Free)"}
+                        {isUnlocked
+                          ? "Equip (Unlocked)"
+                          : `${tool.price} COOK — Equip`}
                       </span>
                     )}
                   </Button>

@@ -1,8 +1,15 @@
 "use client";
 
-import React from "react";
-import { ExternalLink, Receipt, Clock, Sparkles } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import {
+  ExternalLink,
+  Receipt,
+  Sparkles,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableHeader,
@@ -17,6 +24,8 @@ interface KitchenReceiptsTableProps {
   receipts: KitchenReceipt[];
   currentSlot: number;
 }
+
+const ITEMS_PER_PAGE = 10;
 
 function formatTimeAgo(timestamp: number): string {
   const seconds = Math.floor((Date.now() - timestamp) / 1000);
@@ -37,6 +46,23 @@ export function KitchenReceiptsTable({
   receipts,
   currentSlot,
 }: KitchenReceiptsTableProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.max(1, Math.ceil(receipts.length / ITEMS_PER_PAGE));
+
+  // Reset page if receipts length changes drastically
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [totalPages, currentPage]);
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentReceipts = receipts.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
+
   return (
     <div className="rounded-3xl border border-border bg-card p-6 sm:p-7 shadow-xs">
       {/* Table Header Row */}
@@ -106,7 +132,7 @@ export function KitchenReceiptsTable({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {receipts.map((receipt) => (
+                {currentReceipts.map((receipt) => (
                   <TableRow
                     key={receipt.id}
                     className="border-border/40 hover:bg-accent/30 transition-colors"
@@ -169,6 +195,66 @@ export function KitchenReceiptsTable({
                 ))}
               </TableBody>
             </Table>
+          </div>
+        )}
+
+        {/* Pagination Controls */}
+        {receipts.length > 0 && (
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-4 text-xs">
+            <span className="text-text-muted">
+              Showing{" "}
+              <strong className="text-text">
+                {startIndex + 1}–
+                {Math.min(startIndex + ITEMS_PER_PAGE, receipts.length)}
+              </strong>{" "}
+              of <strong className="text-text">{receipts.length}</strong> receipts
+            </span>
+
+            <div className="flex items-center gap-1.5">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="h-8 rounded-xl border-border px-2.5 text-xs font-semibold text-text hover:bg-accent disabled:opacity-40 cursor-pointer"
+              >
+                <ChevronLeft className="h-3.5 w-3.5 mr-1" />
+                <span>Prev</span>
+              </Button>
+
+              <div className="flex items-center gap-1 px-1">
+                {[...Array(totalPages)].map((_, i) => {
+                  const pageNum = i + 1;
+                  const isActive = currentPage === pageNum;
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`h-7 w-7 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+                        isActive
+                          ? "bg-primary text-primary-foreground shadow-xs"
+                          : "text-text-muted hover:bg-accent hover:text-text"
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
+                disabled={currentPage === totalPages}
+                className="h-8 rounded-xl border-border px-2.5 text-xs font-semibold text-text hover:bg-accent disabled:opacity-40 cursor-pointer"
+              >
+                <span>Next</span>
+                <ChevronRight className="h-3.5 w-3.5 ml-1" />
+              </Button>
+            </div>
           </div>
         )}
       </div>

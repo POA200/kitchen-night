@@ -65,7 +65,9 @@ export function LeaderboardTable({
           // If the connected user has an active profile, ensure they are present or up-to-date in the list
           if (connectedWalletKey && currentUserProfile) {
             const existingIndex = list.findIndex(
-              (p) => p.owner === connectedWalletKey || p.name.toLowerCase() === currentUserProfile.name.toLowerCase()
+              (p) =>
+                p.owner === connectedWalletKey ||
+                p.name.toLowerCase() === currentUserProfile.name.toLowerCase(),
             );
 
             const userEntry: LeaderboardEntry = {
@@ -113,7 +115,11 @@ export function LeaderboardTable({
 
   useEffect(() => {
     fetchLeaderboard();
-  }, [connectedWalletKey, currentUserProfile?.netWorth, currentUserProfile?.bakesCount]);
+  }, [
+    connectedWalletKey,
+    currentUserProfile?.netWorth,
+    currentUserProfile?.bakesCount,
+  ]);
 
   const totalPages = Math.max(1, Math.ceil(entries.length / ITEMS_PER_PAGE));
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -146,7 +152,9 @@ export function LeaderboardTable({
             className="h-8 w-8 rounded-full text-text-muted hover:text-text cursor-pointer"
             title="Refresh Leaderboard"
           >
-            <RefreshCw className={`h-3.5 w-3.5 ${isLoading ? "animate-spin" : ""}`} />
+            <RefreshCw
+              className={`h-3.5 w-3.5 ${isLoading ? "animate-spin" : ""}`}
+            />
           </Button>
 
           <div className="flex items-center gap-1.5 rounded-full border border-border/70 bg-accent/40 px-3.5 py-1.5 text-xs font-semibold text-text">
@@ -187,8 +195,8 @@ export function LeaderboardTable({
               No Bakeries Ranked Yet
             </h4>
             <p className="mt-1 max-w-sm text-xs text-text-muted">
-              Be the first chef to open a kitchen and bake shifts on Cookie Chain
-              to take the #1 crown!
+              Be the first chef to open a kitchen and bake shifts on Cookie
+              Chain to take the #1 crown!
             </p>
           </div>
         ) : (
@@ -335,9 +343,11 @@ export function LeaderboardTable({
             <span className="text-text-muted">
               Showing{" "}
               <strong className="text-text">
-                {startIndex + 1}–{Math.min(startIndex + ITEMS_PER_PAGE, entries.length)}
+                {startIndex + 1}–
+                {Math.min(startIndex + ITEMS_PER_PAGE, entries.length)}
               </strong>{" "}
-              of <strong className="text-text">{entries.length}</strong> top bakers
+              of <strong className="text-text">{entries.length}</strong> top
+              bakers
             </span>
 
             <div className="flex items-center gap-1.5">
@@ -375,7 +385,9 @@ export function LeaderboardTable({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
                 disabled={currentPage === totalPages}
                 className="h-8 rounded-xl border-border px-2.5 text-xs font-semibold text-text hover:bg-accent disabled:opacity-40 cursor-pointer"
               >
