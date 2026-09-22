@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { ArrowUpRight, User, Utensils, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +16,15 @@ export function KitchenProfileCard({
   profile,
   onOpenPantry,
 }: KitchenProfileCardProps) {
+  const router = useRouter();
+
+  const handlePantryClick = () => {
+    if (typeof window !== "undefined" && window.innerWidth < 640) {
+      router.push("/pantry");
+    } else {
+      onOpenPantry();
+    }
+  };
   return (
     <div className="flex h-full flex-col justify-between rounded-3xl border border-border bg-card p-6 sm:p-7 shadow-xs">
       <div>
@@ -104,7 +114,7 @@ export function KitchenProfileCard({
       <div className="mt-6">
         <Button
           variant="outline"
-          onClick={onOpenPantry}
+          onClick={handlePantryClick}
           className="flex h-12 w-full items-center justify-between rounded-2xl border-border bg-card px-5 text-sm font-medium text-text shadow-xs transition-colors hover:bg-accent cursor-pointer"
         >
           <span>Pantry & Utensils</span>
