@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight, LogOut, Menu, Wallet, X } from "lucide-react";
+import { ArrowUpRight, LogOut, Menu, Volume2, VolumeX, Wallet, X } from "lucide-react";
 import { PublicKey } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
@@ -18,6 +18,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { BridgeGuideModal } from "@/components/kitchen/BridgeGuideModal";
+import { soundEffects } from "@/lib/audio";
 
 export const COOK_MINT = new PublicKey(
   "36ZrtQoab5MhhySaP1YSTwUahSk6GRVUTtZ6cuVfm9e1",
@@ -32,6 +33,16 @@ export function Header() {
   const [balance, setBalance] = useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isBridgeModalOpen, setIsBridgeModalOpen] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+
+  useEffect(() => {
+    setIsMuted(soundEffects.isMuted());
+  }, []);
+
+  const handleToggleSound = () => {
+    const next = soundEffects.toggleMute();
+    setIsMuted(next);
+  };
 
   // Fetch COOK token / native balance
   useEffect(() => {
@@ -167,6 +178,26 @@ export function Header() {
             RIGHT — WALLET CONTROLS
         ───────────────────────────────────────────── */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
+          {/* Sound FX Toggle Button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleToggleSound}
+            aria-label={isMuted ? "Unmute sounds" : "Mute sounds"}
+            title={
+              isMuted
+                ? "Sound Effects: Muted (Click to Enable)"
+                : "Sound Effects: Active (Click to Mute)"
+            }
+            className="h-9 w-9 rounded-full text-text-muted hover:bg-accent hover:text-text cursor-pointer"
+          >
+            {isMuted ? (
+              <VolumeX className="h-4 w-4 text-text-muted" />
+            ) : (
+              <Volume2 className="h-4 w-4 text-primary" />
+            )}
+          </Button>
+
           {connected && publicKey ? (
             <>
               {/* Wallet Balance (visible on both mobile and desktop) */}

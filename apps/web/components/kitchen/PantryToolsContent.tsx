@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { KitchenProfile, UTENSIL_TOOLS, UtensilTool } from "@/hooks/useKitchen";
+import { soundEffects } from "@/lib/audio";
 
 interface PantryToolsContentProps {
   profile: KitchenProfile;
@@ -46,6 +47,7 @@ export function PantryToolsContent({
   error,
 }: PantryToolsContentProps) {
   const handleEquip = async (toolId: string) => {
+    soundEffects.init();
     try {
       await onEquipTool(toolId);
     } catch {

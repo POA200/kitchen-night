@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { KitchenProfile } from "@/hooks/useKitchen";
+import { soundEffects } from "@/lib/audio";
 
 interface BakeOrderCardProps {
   currentSlot: number;
@@ -85,6 +86,7 @@ export function BakeOrderCard({
   }, [profile.equippedToolId]);
 
   const handleBake = async () => {
+    soundEffects.init();
     try {
       await onBake(
         activeOrder.orderId,

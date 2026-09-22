@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { soundEffects } from "@/lib/audio";
 
 interface OpenKitchenModalProps {
   isOpen: boolean;
@@ -49,6 +50,7 @@ export function OpenKitchenModal({
     }
 
     setValidationError(null);
+    soundEffects.init();
 
     try {
       await onOpenKitchen(trimmed);
