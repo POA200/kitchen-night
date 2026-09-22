@@ -1,10 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { KitchenProfile } from "@/hooks/useKitchen";
 import { PantryToolsContent } from "./PantryToolsContent";
 

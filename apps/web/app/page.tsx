@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { ChefHat, Flame, Sparkles, Wallet } from "lucide-react";
@@ -15,7 +15,7 @@ import { KitchenReceiptsTable } from "@/components/kitchen/KitchenReceiptsTable"
 import { PantryToolsModal } from "@/components/kitchen/PantryToolsModal";
 
 export default function Home() {
-  const { connected } = useWallet();
+  const { connected, publicKey } = useWallet();
   const { setVisible } = useWalletModal();
   const {
     isLoading,
@@ -30,12 +30,35 @@ export default function Home() {
     equipTool,
   } = useKitchen();
 
+  const walletKey = publicKey ? publicKey.toBase58() : null;
   const [isOpenModalManual, setIsOpenModalManual] = useState(false);
   const [isPantryOpen, setIsPantryOpen] = useState(false);
+  const [hasPromptedForWallet, setHasPromptedForWallet] = useState<string | null>(null);
 
-  // Auto-open modal if wallet connected and has no kitchen, or if manually clicked
-  const showOpenModal =
-    connected && !isLoading && (!hasKitchen || isOpenModalManual);
+  // Auto-open modal ONCE only if confirmed that the connected wallet has NO kitchen
+  useEffect(() => {
+    if (
+      connected &&
+      !isLoading &&
+      !hasKitchen &&
+      walletKey &&
+      hasPromptedForWallet !== walletKey
+    ) {
+      setIsOpenModalManual(true);
+      setHasPromptedForWallet(walletKey);
+    }
+  }, [connected, isLoading, hasKitchen, walletKey, hasPromptedForWallet]);
+
+  // Reset prompt state when wallet disconnects
+  useEffect(() => {
+    if (!connected) {
+      setHasPromptedForWallet(null);
+      setIsOpenModalManual(false);
+    }
+  }, [connected]);
+
+  // STRICT: If a kitchen already exists, NEVER show the Open Kitchen modal
+  const showOpenModal = connected && !hasKitchen && isOpenModalManual;
 
   return (
     <main className="min-h-[calc(100vh-4rem)] w-full bg-background px-4 py-8 sm:px-8 lg:px-16">

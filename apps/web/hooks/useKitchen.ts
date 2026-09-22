@@ -107,19 +107,51 @@ async function syncToServer(
   }
 }
 
+function getLocalProfile(walletKey: string | null): KitchenProfile | null {
+  if (!walletKey || typeof window === "undefined") return null;
+  try {
+    const item = localStorage.getItem(`kn_profile_${walletKey}`);
+    return item ? (JSON.parse(item) as KitchenProfile) : null;
+  } catch {
+    return null;
+  }
+}
+
+function getLocalReceipts(walletKey: string | null): KitchenReceipt[] {
+  if (!walletKey || typeof window === "undefined") return [];
+  try {
+    const item = localStorage.getItem(`kn_receipts_${walletKey}`);
+    return item ? (JSON.parse(item) as KitchenReceipt[]) : [];
+  } catch {
+    return [];
+  }
+}
+
 export function useKitchen() {
   const { connection } = useConnection();
   const { publicKey, connected, sendTransaction } = useWallet();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasKitchen, setHasKitchen] = useState<boolean>(false);
-  const [profile, setProfile] = useState<KitchenProfile | null>(null);
-  const [receipts, setReceipts] = useState<KitchenReceipt[]>([]);
+  const walletKey = publicKey ? publicKey.toBase58() : null;
+
+  const [isLoading, setIsLoading] = useState(() => {
+    if (!walletKey || !connected) return false;
+    return !getLocalProfile(walletKey);
+  });
+  const [hasKitchen, setHasKitchen] = useState<boolean>(() => {
+    if (!walletKey || !connected) return false;
+    return !!getLocalProfile(walletKey);
+  });
+  const [profile, setProfile] = useState<KitchenProfile | null>(() => {
+    if (!walletKey || !connected) return null;
+    return getLocalProfile(walletKey);
+  });
+  const [receipts, setReceipts] = useState<KitchenReceipt[]>(() => {
+    if (!walletKey || !connected) return [];
+    return getLocalReceipts(walletKey);
+  });
   const [currentSlot, setCurrentSlot] = useState<number>(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
-
-  const walletKey = publicKey ? publicKey.toBase58() : null;
 
   // Poll current block slot
   useEffect(() => {
@@ -147,7 +179,7 @@ export function useKitchen() {
 
   // Load Kitchen Profile & Receipts: multi-layer (localStorage -> Server API -> On-Chain SVM)
   useEffect(() => {
-    if (!walletKey || !connected || !publicKey) {
+    if (!walletKey || !connected) {
       setHasKitchen(false);
       setProfile(null);
       setReceipts([]);
@@ -156,33 +188,21 @@ export function useKitchen() {
     }
 
     let isMounted = true;
-    setIsLoading(true);
+    const cached = getLocalProfile(walletKey);
+    const cachedReceiptsList = getLocalReceipts(walletKey);
+
+    if (cached) {
+      setProfile(cached);
+      setReceipts(cachedReceiptsList);
+      setHasKitchen(true);
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
 
     const loadData = async () => {
-      let loadedProfile: KitchenProfile | null = null;
-      let loadedReceipts: KitchenReceipt[] = [];
-
-      // Layer 1: Check Local Storage (instant client cache)
-      try {
-        const storedProfile = localStorage.getItem(`kn_profile_${walletKey}`);
-        const storedReceipts = localStorage.getItem(`kn_receipts_${walletKey}`);
-
-        if (storedProfile) {
-          loadedProfile = JSON.parse(storedProfile) as KitchenProfile;
-          if (storedReceipts) {
-            loadedReceipts = JSON.parse(storedReceipts) as KitchenReceipt[];
-          }
-        }
-      } catch (e) {
-        console.warn("Error reading localStorage:", e);
-      }
-
-      if (loadedProfile && isMounted) {
-        setProfile(loadedProfile);
-        setReceipts(loadedReceipts);
-        setHasKitchen(true);
-        setIsLoading(false);
-      }
+      let loadedProfile: KitchenProfile | null = cached;
+      let loadedReceipts: KitchenReceipt[] = cachedReceiptsList;
 
       // Layer 2: Check Server API (cross-device sync across browsers & devices)
       try {
@@ -222,7 +242,9 @@ export function useKitchen() {
       // Layer 3: Reconstruct & Verify from On-chain Cookie Chain SVM Memo Transactions
       // If user connects on a completely new phone/device with no cached data
       try {
-        const sigs = await connection.getSignaturesForAddress(publicKey, {
+        const { PublicKey } = await import("@solana/web3.js");
+        const userPubkey = new PublicKey(walletKey);
+        const sigs = await connection.getSignaturesForAddress(userPubkey, {
           limit: 100,
         });
 
@@ -371,7 +393,7 @@ export function useKitchen() {
     return () => {
       isMounted = false;
     };
-  }, [walletKey, connected, publicKey, connection]);
+  }, [walletKey, connected, connection]);
 
   // Open Kitchen
   const openKitchen = useCallback(

@@ -81,7 +81,8 @@ export default function PantryPage() {
               No Kitchen Found
             </h3>
             <p className="mt-1 text-xs text-text-muted">
-              You must register a bakery on Cookie Chain before accessing the pantry.
+              You must register a bakery on Cookie Chain before accessing the
+              pantry.
             </p>
             <div className="mt-5">
               <Link href="/">

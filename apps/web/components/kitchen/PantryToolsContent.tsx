@@ -26,7 +26,9 @@ function getToolIcon(iconName: UtensilTool["iconName"]) {
     case "spoon":
       return <Utensils className="h-6 w-6 text-primary stroke-[1.8]" />;
     case "oven":
-      return <Flame className="h-6 w-6 text-primary fill-primary/20 stroke-[1.8]" />;
+      return (
+        <Flame className="h-6 w-6 text-primary fill-primary/20 stroke-[1.8]" />
+      );
     case "chiller":
       return <Snowflake className="h-6 w-6 text-primary stroke-[1.8]" />;
     case "whisk":
@@ -176,7 +178,8 @@ export function PantryToolsContent({
       {/* Footer Info */}
       <div className="mt-3.5 text-center">
         <p className="font-mono text-[11px] text-text-muted">
-          Equipping tools submits an on-chain memo: kitchen:v1:equip:&lt;tool_id&gt;
+          Equipping tools submits an on-chain memo:
+          kitchen:v1:equip:&lt;tool_id&gt;
         </p>
       </div>
     </div>
