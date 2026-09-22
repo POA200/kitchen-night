@@ -90,10 +90,10 @@ export function PantryToolsContent({
       </div>
 
       {/* Cookieswap Liquidity Callout */}
-      <div className="mt-3 flex items-center justify-between gap-3 rounded-2xl border border-primary/20 bg-primary/5 px-4 py-2.5">
-        <div className="flex items-center gap-2 text-xs text-text">
-          <Sparkles className="h-4 w-4 text-primary shrink-0" />
-          <span className="font-medium text-text">
+      <div className="mt-3 flex flex-row items-center justify-between gap-2.5 rounded-2xl border border-primary/20 bg-primary/5 px-3.5 py-2.5 sm:px-4">
+        <div className="flex min-w-0 items-center gap-1.5 text-xs text-text">
+          <Sparkles className="h-4 w-4 shrink-0 text-primary" />
+          <span className="font-medium text-text text-[11px] sm:text-xs whitespace-nowrap truncate">
             Need $COOK to equip tools?
           </span>
         </div>
@@ -101,10 +101,10 @@ export function PantryToolsContent({
           href="https://cookieswap.fun"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 rounded-xl bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground shadow-xs hover:bg-primary/90 transition-colors"
+          className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-xl bg-primary px-3 py-1.5 text-[11px] font-semibold text-primary-foreground shadow-xs hover:bg-primary/90 transition-colors sm:text-xs"
         >
           <span>Get on Cookieswap</span>
-          <ExternalLink className="h-3 w-3" />
+          <ExternalLink className="h-3 w-3 shrink-0" />
         </a>
       </div>
 
